@@ -83,10 +83,11 @@ Get-MsolDomain -ErrorAction SilentlyContinue
 } #-- close function
 #------------RUN SUB FUNCTIONS-------------
 clear
-Start-Log
+
 #---------------------------------------
 
 function startLogin {
+Start-Log
 login365
 #login-AzureAD
 } #-- close function 
@@ -161,7 +162,7 @@ Add-Content $logBad "----------- UNLOCKING ACCOUNT EXCEPTION LOG START ---------
             Write-Host "          Accounts have been UNLOCKED successfully!          " -ForegroundColor Black -BackgroundColor Green
         } #close if
     Else{Write-Host "[ERROR] Please select the .csv file to use." -ForegroundColor White -BackgroundColor Red}
- 
+
 } #-- close function
 function addLicense {
 clear
@@ -208,6 +209,71 @@ checkConnection
         }#close if
     Else{Write-Host "[ERROR] You need to load the .csv file first." -ForegroundColor White -BackgroundColor Red}
         } #-- close function
+function changeUPN {
+clear
+checkConnection
+
+Add-Content $logGood "----------- UNLOCKING ACCOUNT SUCCESS LOG START --------------"
+Add-Content $logBad "----------- UNLOCKING ACCOUNT EXCEPTION LOG START --------------"   
+ 
+    foreach($row in $global:users){$i+=1}  #counts how many records exist on .csv file
+    if($i -gt 1) { #to give errors in case user does not select .csv file
+
+        $count =0
+        ForEach ($row in $global:users)
+            {
+            $currentRowLogin = $global:users.Login[$count]
+            $currentRowPassword = $global:users.Password[$count]
+            $currentRowEmail = $global:users.UserPrincipalName[$count]
+            $NewUserPrincipalName = $global:users.NewUserPrincipalName[$count]
+            Write-Host $currentRowEmail
+            Try{
+            
+            Set-MsolUserPrincipalName -UserPrincipalName $UserPrincipalName -NewUserPrincipalName $NewUserPrincipalName
+
+
+            Add-Content $logGood "[SUCCESS] - $currentRowEmail has been UNLOCKED"
+            }
+            Catch [System.Exception] {Write-Host ""}
+            Catch {Write-Host "[ERROR] - Something went wrong while CHANGING EMAIL $currentRowEmail" -ForegroundColor Red
+            Add-Content $logBad "[ERROR] - Something went wrong while CHANGING EMAIL $currentRowEmail"        
+            }
+            $count += 1
+            Write-Host "$currentRowEmail has been updated to : $NewUserPrincipalName" -ForegroundColor Green
+            } # -Close ForLoop
+            Add-Content $logGood "----------- CHANGING EMAIL ACCOUNT SUCCESS LOG ENDS --------------"
+            Add-Content $logGood ""
+            Add-Content $logBad "----------- CHANGING EMAIL EXCEPTION LOG ENDS --------------"
+            Add-Content $logBad ""
+            Write-Host "          UPN has been successfully updated          " -ForegroundColor Black -BackgroundColor Green
+        } #close if
+    Else{Write-Host "[ERROR] Please select the .csv file to use." -ForegroundColor White -BackgroundColor Red}
+ 
+} #-- close function
+function generateCSV {
+$userProfile = $env:USERPROFILE
+$myDownload = "$userProfile\Downloads"
+$csvExportPath = "$myDownload\IT-Data-Upload-Sample.csv"
+
+$array =@()
+        $row = New-Object Object
+        $row | Add-Member -MemberType NoteProperty -Name "UserPrincipalName" -Value "name.surname@fitzroy.org"
+        $row | Add-Member -MemberType NoteProperty -Name "Login" -Value "Name.Surname"
+        $row | Add-Member -MemberType NoteProperty -Name "Password" -Value "xxx111lol"
+        $row | Add-Member -MemberType NoteProperty -Name "NewUserPrincipalName" -Value "newName.newSurname@fitzroy.org"
+        $array += $row
+Try{
+        $array | Export-Csv -Path $csvExportPath -NoTypeInformation
+        Write-Host "[SUCCESS] Sample .csv created successfully" -ForegroundColor Green
+        Write-Host "Sample file is located on the followig path" -ForegroundColor Green
+        Write-Host $csvExportPath -ForegroundColor Yellow}
+Catch{Write-Host "[ERROR] It could not generate sample.csv file" -ForegroundColor Black -BackgroundColor Red
+      Write-Host "[ERROR] Please create a .csv file manually with the following headers" -ForegroundColor Black -BackgroundColor Red
+      Write-Host "----------------------------------------------------------------" -ForegroundColor Red
+      Write-Host "| UserPrincipalName | Login | Password | NewUserPrincipalName |" -ForegroundColor Green
+Write-Host      "name.surname@fitzroy.org | Name.Surname | xxx111lol | newName.newSurname@fitzroy.org |" -ForegroundColor Green
+  }
+        }
 function lockAccount {
 clear
 checkConnection
@@ -315,10 +381,20 @@ checkConnection
             }#close if
     Else{Write-Host "[ERROR] Please select the .csv file to use." -ForegroundColor white -BackgroundColor red}
         } #--close function
-function checkInactiveWithLicense{
-Get-MsolUser -MaxResults 10000 |
-?{$_.UserPrincipalName -like "*fitzroy*"
- -or $_.UserPrincipalName -like "*love4life*" -and $_.islicensed -like "true" -and $_.blockcredential -like "true"} | select UserPrincipalName
+function checkInactiveWithLicense {
+
+clear
+checkConnection
+
+            Try{
+                Get-MsolUser -MaxResults 10000 |
+                ?{$_.UserPrincipalName -like "*fitzroy*"
+                -or $_.UserPrincipalName -like "*love4life*" -and $_.islicensed -like "true" -and $_.blockcredential -like "true"} | select UserPrincipalName
+                }
+        Catch [System.Exception] {Write-Host ""}
+        Catch {Write-Host ""}
+
+
 }
 
 
@@ -330,7 +406,10 @@ $LabelObject = [System.Windows.Forms.Label]
 $FileDialogObject = [System.Windows.Forms.OpenFileDialog]
 $ButtonObject = [System.Windows.Forms.Button]
 $RadioObject = [System.Windows.Forms.RadioButton]
-
+$greenButton = "#269524"
+$green2Button ="#112811"
+$redButton = "#D7411F"
+$red2BUtton = "#2B100D"
 $titleFont = "Cambria,11,style=bold"
 $radioFont = "Verdana,9"
 $fontBasic = "Verdana,10,style=bold"
@@ -404,47 +483,68 @@ $rdn_Button3.Font=$radioFont
 $rdn_Button3.Location= New-Object System.Drawing.Point(20,200)
 $rdn_Button3.AutoSize=$true
 $rdn_Button3.Parent="onboarding"
+
+$rdn_Button4 = New-Object $RadioObject
+$rdn_Button4.Text ="Change UPN(mail)"
+$rdn_Button4.Font=$radioFont
+$rdn_Button4.Location= New-Object System.Drawing.Point(20,225)
+$rdn_Button4.AutoSize=$true
+$rdn_Button4.Parent="onboarding"
     
     #Define Onboarding Label
 $lbl_Offboarding = New-Object $LabelObject
 $lbl_Offboarding.text = "_____________Offboarding_____________"
 $lbl_Offboarding.Autosize = $true
 $lbl_Offboarding.Font=$titleFont ### --------------------------------------------font here
-$lbl_Offboarding.Location = New-Object system.drawing.point (20,230)
+$lbl_Offboarding.Location = New-Object system.drawing.point (20,250)
 
     #Define Radio options for Offboarding
-$rdn_Button4 = New-Object $RadioObject
-$rdn_Button4.Text ="Lock Account"
-$rdn_Button4.Font=$radioFont
-$rdn_Button4.Location= New-Object System.Drawing.Point(20,260)
-$rdn_Button4.AutoSize=$true
-$rdn_Button4.Parent="offboarding"
-
 $rdn_Button5 = New-Object $RadioObject
-$rdn_Button5.Text ="Remove All Licenses"
+$rdn_Button5.Text ="Lock Account"
 $rdn_Button5.Font=$radioFont
-$rdn_Button5.Location= New-Object System.Drawing.Point(20,285)
+$rdn_Button5.Location= New-Object System.Drawing.Point(20,280)
 $rdn_Button5.AutoSize=$true
 $rdn_Button5.Parent="offboarding"
+
+$rdn_Button6 = New-Object $RadioObject
+$rdn_Button6.Text ="Remove All Licenses"
+$rdn_Button6.Font=$radioFont
+$rdn_Button6.Location= New-Object System.Drawing.Point(20,302)
+$rdn_Button6.AutoSize=$true
+$rdn_Button6.Parent="offboarding"
+
+$btn_checkInactive = New-Object $ButtonObject
+$btn_checkInactive.text="Check Inactive users w/ Licenses"
+$btn_checkInactive.AutoSize=$true
+$btn_checkInactive.Font="Arial,10,style=bold"
+$btn_checkInactive.ForeColor= $green2Button
+$btn_checkInactive.Location = New-Object System.Drawing.Point(25,330)
 
 $btn_Login = New-Object $ButtonObject
 $btn_Login.text="Login"
 $btn_Login.AutoSize=$true
 $btn_Login.Font="Arial,9,style=bold"
-$btn_Login.ForeColor="green"
+$btn_Login.ForeColor= $greenButton
 $btn_Login.Location = New-Object System.Drawing.Point(250,40)
 
 $btn_exec = New-Object $ButtonObject
 $btn_exec.text="Execute"
 $btn_exec.Font="Arial,13,style=bold"
-$btn_exec.ForeColor="green"
+$btn_exec.ForeColor= $greenButton
 $btn_exec.AutoSize=$true
 $btn_exec.Location = New-Object System.Drawing.Point(20,400)
+
+$btn_csv = New-Object $ButtonObject
+$btn_csv.text="Generate .csv"
+$btn_csv.Font="Arial,10,style=bold"
+$btn_csv.ForeColor= $greenButton
+$btn_csv.AutoSize=$true
+$btn_csv.Location = New-Object System.Drawing.Point(200,365)
 
 $btn_cancel = New-Object $ButtonObject
 $btn_cancel.text="Cancel"
 $btn_cancel.Font="Arial,11,style=bold"
-$btn_cancel.ForeColor="red"
+$btn_cancel.ForeColor= $redButton
 $btn_cancel.AutoSize=$true
 $btn_cancel.Location = New-Object System.Drawing.Point(250,400)
 #Functions
@@ -474,6 +574,7 @@ Elseif ($rdn_Button2.Checked  -eq $true ) {unlockAccount}
 Elseif ($rdn_Button3.Checked  -eq $true ) {addLicense}
 Elseif ($rdn_Button4.Checked  -eq $true ) {lockAccount}
 Elseif ($rdn_Button5.Checked  -eq $true ) {removeAllLicenses}
+Elseif ($rnd_Button6.checked -eq $true)   {changeUPN}
 Else {Write-Host "[ERROR] You are not yet connected to Office 365." -foreground Red} 
  }#close function
 
@@ -501,11 +602,13 @@ $btn_Search.Add_Click({SearchDialog})
 $btn_Login.Add_Click({startLogin})
 $btn_exec.Add_Click({checkSelected})
 $btn_cancel.Add_Click({closeWindow})
-
+$btn_csv.Add_Click({generateCSV})
+$btn_checkInactive.Add_Click({checkInactiveWithLicense})
 
 ##Control add things to the window
-$window.Controls.AddRange(@($lbl_title,$lbl_connected,$btn_Search,$lbl_filePath,$lbl_Onboarding,$rdn_Button1,$rdn_Button2,$rdn_Button3,$lbl_Offboarding,
-$rdn_Button4,$rdn_Button5,$btn_Login,$btn_exec,$btn_cancel))
+$window.Controls.AddRange(@($lbl_title,$lbl_connected,$btn_Search,$lbl_filePath,$lbl_Onboarding,
+$rdn_Button1,$rdn_Button2,$rdn_Button3,$rdn_Button4,$rdn_Button5,$rdn_Button6,$rdn_Button7
+$lbl_Offboarding,$btn_Login,$btn_exec,$btn_csv,$btn_checkInactive,$btn_cancel))
 
 
 #creates form
