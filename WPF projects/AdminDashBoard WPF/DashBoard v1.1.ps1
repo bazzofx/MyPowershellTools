@@ -415,7 +415,10 @@ $RadioObject = [System.Windows.Forms.RadioButton]
 $greenButton = "#269524"
 $green2Button ="#112811"
 $redButton = "#D7411F"
-$red2BUtton = "#2B100D"
+$red2Button = "#2B100D"
+$bgcolor = "#CFCFED"
+$lighttext = "#E9DBB8"
+$darktet = "#999999"
 $titleFont = "Cambria,11,style=bold"
 $radioFont = "Verdana,9"
 $fontBasic = "Verdana,10,style=bold"
@@ -425,14 +428,15 @@ $window.MaximumSize="360,490"
 $window.MinimumSize="360,490"
 $window.ClientSize="350,450"
 $window.Text="FitzRoy - 365 Hulk"
-$window.backcolor = "lightgray"
+$window.backcolor = $bgcolor
 ####$window.Add_FormClosing( { $_.Cancel = $true; } ) ###make user unable to close window
 
     #Define Main Title of Program
 $lbl_title = New-Object $LabelObject
-$lbl_title.text = "User Admin Dashboard v1.5"
+$lbl_title.text = "Fitzroy Hyper User Control v1.1"
 $lbl_title.Autosize = $true
 $lbl_title.Font="Cambria,12,style=bold" ### --------------------------------------------font here
+$lbl_title.ForeColor = $red2Button
 $lbl_title.Location = New-Object system.drawing.point (35,5)
 
     #Define FilePath Label info
@@ -445,7 +449,7 @@ $lbl_filePath.BorderStyle="Fixed3D"
 $lbl_filePath.width ="220"
 $lbl_filePath.Height="20"
 $lbl_filePath.Font="Verdana,8,style=bold"
-$lbl_filePath.ForeColor="gray"
+$lbl_filePath.ForeColor=$red2Button
 $lbl_filePath.Location = New-Object system.drawing.point (20,85)
     
     #Define label if connected or not
@@ -458,6 +462,7 @@ $lbl_connected.Location = New-Object system.drawing.point (20,47)
     #Define Search Button
 $btn_Search = New-Object $ButtonObject
 $btn_Search.text="Search..."
+$btn_Search.ForeColor =$red2Button
 $btn_Search.AutoSize=$true
 $btn_Search.Location = New-Object System.Drawing.Point(250,80)
 
@@ -502,7 +507,7 @@ $lbl_Offboarding = New-Object $LabelObject
 $lbl_Offboarding.text = "_____________Offboarding_____________"
 $lbl_Offboarding.Autosize = $true
 $lbl_Offboarding.Font=$titleFont ### --------------------------------------------font here
-$lbl_Offboarding.Location = New-Object system.drawing.point (20,250)
+$lbl_Offboarding.Location = New-Object system.drawing.point (20,255)
 
     #Define Radio options for Offboarding
 $rdn_Button5 = New-Object $RadioObject
