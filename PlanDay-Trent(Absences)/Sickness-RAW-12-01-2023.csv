@@ -1,0 +1,4 @@
+"EmployeeID","Date","FullName","JobTitle","StartTime","EndTime","ShiftType","Hours","ManagerFullName","EmployeeEmail","ManagerEmail","USID"
+"08715 ","10/10/2022","Daniella Ringrose","","09:00:00","16:30:00","Sickness","7.50","Craig Richards ","daniella0172@gmail.com ","Craig.Richards@fitzroy.org ","USID-10102022DaniellaRingrose-Sicknessstart09-00end16-30"
+"08715 ","14/10/2022","Daniella Ringrose","","09:00:00","16:30:00","Sickness","7.50","Craig Richards ","daniella0172@gmail.com ","Craig.Richards@fitzroy.org ","USID-14102022DaniellaRingrose-Sicknessstart09-00end16-30"
+"07726 ","15/12/2022","Craig Richards","","12:00:00","18:00:00","Sickness","6.50","Marianne Radcliffe ","craig.richards.1987@gmail.com ","Marianne.Radcliffe@fitzroy.org ","USID-15122022CraigRichards-Sicknessstart12-00end18-00"

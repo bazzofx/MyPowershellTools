@@ -1,0 +1,3 @@
+"EmployeeID","Date","FullName","JobTitle","StartTime","EndTime","ShiftType","Hours","ManagerFullName","EmployeeEmail","ManagerEmail","USID"
+"09356 ","01/12/2022","Paulo Bazzo","","12:00:00","18:00:00","Team Meeting","6.50","Philip George ","bazzofx@outlook.com ","Phil.George@fitzroy.org ","USID-01122022PauloBazzo-Team Meetingstart12-00end18-00"
+"09356 ","04/12/2022","Paulo Bazzo","","12:00:00","18:00:00","Training","6.20","Philip George ","bazzofx@outlook.com ","Phil.George@fitzroy.org ","USID-04122022PauloBazzo-Trainingstart12-00end18-00"

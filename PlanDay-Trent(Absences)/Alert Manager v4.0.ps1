@@ -1,7 +1,7 @@
 ﻿##Connect to SFTP , download report and place inside \.
 #This is the main path where the script will live. it must have a folder named "archive" and "logs"
 
-$wd = "C:\Users\Paulo.Bazzo\OneDrive - FitzRoy\Documents\FitzRoy\Trent Projects\In Progress\December\PlanDay - PRJ\To Do\Script Absence Roster\main_v4"
+$wd = "C:\Users\Paulo.Bazzo\OneDrive - FitzRoy\Documents\FitzRoy\PowerShell\MyPowershellTools\PlanDay-Trent(Absences)"
 
 $ErrorActionPreference = "stop"
 $DebugPreference = "Continue"
@@ -355,15 +355,17 @@ Write-Host "`n--------------- RECORD CHANGES ---------------" -ForegroundColor G
 
                         $arrayNewRecords += $row
                         Write-Host "[ADD NEW Annual Leave] - $rowUSID" -ForegroundColor Yellow
-                        $reportFile = "$wd/loadArea/Holiday-TO-LOAD-$today.csv"
-                        $arrayNewRecords | Export-Csv $reportFile -NoTypeInformation
-                            #without the below code the export would have double quotes between records, making the upload fail
-                        $data = Get-Content $reportFile
-                        $data.Replace('","',",").TrimStart('"').TrimEnd('"') | Out-File $reportFile -Force -Confirm:$false
                     
                     
                             }#--close if
                                 }# --close forEach
+                        $reportFile = "$wd/loadArea/Holiday-TO-LOAD-$today.csv"
+                        $arrayNewRecords | Export-Csv $reportFile -NoTypeInformation
+                            #without the below code the export would have double quotes between records, making the upload fail
+                        Write-Host "Changing the format to be Trent Data Conversion" -ForegroundColor Yellow
+                        $data = Get-Content $reportFile
+                        $data.Replace('","',",").TrimStart('"').TrimEnd('"') | Out-File $reportFile -Force -Confirm:$false
+
         } # -----------close 2nd Pass function
 
 
@@ -485,17 +487,17 @@ Write-Host "`n--------------- RECORD CHANGES ---------------" -ForegroundColor G
                         $row | Add-Member -MemberType NoteProperty -Name "ABSENCE_END_HOURS" -Value $formattedTime
         
                         $arrayNewRecords += $row
-                        Write-Host "[ADD NEW Sickness Absence] - $rowUSID" -ForegroundColor Magenta
+                        Write-Host "[ADD NEW Sickness Absence] - $rowUSID" -ForegroundColor Magenta                    
+                    
+                            }#--close if
+                                }# --close forEach
                         $reportFile = "$wd/loadArea/Sickness-TO-LOAD-$today.csv"
-                
                         $arrayNewRecords | Export-Csv $reportFile -NoTypeInformation
                             #without the below code the export would have double quotes between records, making the upload fail
                         $data = Get-Content $reportFile
                         $data.Replace('","',",").TrimStart('"').TrimEnd('"') | Out-File $reportFile -Force -Confirm:$false
-                    
-                    
-                            }#--close if
-                                }# --close forEach
+
+
         } # -----------close 2nd Pass function
 
 
@@ -613,17 +615,17 @@ Write-Host "`n--------------- RECORD CHANGES ---------------" -ForegroundColor G
                         $row | Add-Member -MemberType NoteProperty -Name "ABSENCE_END_HOURS" -Value $formattedTime
         
                         $arrayNewRecords += $row
-                        Write-Host "[ADD NEW Other Absence] - $rowUSID" -ForegroundColor Cyan
-                        $reportFile = "$wd/loadArea/Other-TO-LOAD-$today.csv"
-                
+                        Write-Host "[ADD NEW Other Absence] - $rowUSID" -ForegroundColor Cyan                    
+                    
+                            }#--close if
+                                }# --close forEach
+                        $reportFile = "$wd/loadArea/Other-TO-LOAD-$today.csv"                
                         $arrayNewRecords | Export-Csv $reportFile -NoTypeInformation
                             #without the below code the export would have double quotes between records, making the upload fail
                         $data = Get-Content $reportFile
                         $data.Replace('","',",").TrimStart('"').TrimEnd('"') | Out-File $reportFile -Force -Confirm:$false
-                    
-                    
-                            }#--close if
-                                }# --close forEach
+
+
         } # -----------close 2nd Pass function
             }
         Catch {Write-Host ""}
@@ -679,9 +681,9 @@ Catch{Write-Host "[ERROR] Something went wrong while attempting to move the file
 function run {
 MergeReports
 CreateRAWFiles
-Start-Sleep -Seconds 2
-createLoadFiles
-Start-Sleep -Seconds 5
-cleanup
+#Start-Sleep -Seconds 2
+#createLoadFiles
+#Start-Sleep -Seconds 5
+#cleanup
 }
 run
