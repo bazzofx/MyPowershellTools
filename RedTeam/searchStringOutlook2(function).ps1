@@ -4,7 +4,7 @@
 
 Register-ObjectEvent -InputObject $outlook -EventName "AdvancedSearchComplete" -Action {
     Write-Host "ADVANCED SEARCH COMPLETE" $Args.Scope
-    Write-Host "Processing, please wait..." -ForegroundColor Yellow
+    Write-Host "Checking inbox..." -ForegroundColor Yellow
 
     if ($Args.Results) {  
         foreach ($result in $Args.Results) {
@@ -21,16 +21,8 @@ Register-ObjectEvent -InputObject $outlook -EventName "AdvancedSearchComplete" -
             write-host "=================================================="
             $extract | Out-File "$subject.html"
         }
-    Write-Host "GC collected" -ForegroundColor Yellow
-    Remove-Variable outlook
-    [System.GC]::Collect()
-    [System.GC]::WaitForPendingFinalizers()
-    Try{[System.Runtime.Interopservices.Marshal]::ReleaseComObject($outlook)}
-    Catch{}
-
     
     }
-
 
 }
       
@@ -57,11 +49,17 @@ Try{
 }
 Catch{Write-Host "something went wrong" -ForegroundColor Red}
 Finally {
-    Write-Host "function ran done"
+    Write-Host "Processing please wait.." -ForegroundColor Yellow
 }
 }
 
 Get-OutlookInbox
-    
+ 
+     Write-Host "GC collected" -ForegroundColor Yellow
+    Remove-Variable outlook
+    [System.GC]::Collect()
+    [System.GC]::WaitForPendingFinalizers()
+    Try{[System.Runtime.Interopservices.Marshal]::ReleaseComObject($outlook)}
+    Catch{}   
 
 
