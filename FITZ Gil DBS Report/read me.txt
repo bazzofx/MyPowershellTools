@@ -1,0 +1,19 @@
+This script checks for records that have an expired DBS older than 3 years from (today's date).
+
+##How to use
+Download the .csv report from SAP Bussiness Objects located on folder
+Z** Do Note Use*** / Automated Reports/ Find-ExpiredDBS - PB
+
+extract from the .zip file
+save as  "Main.csv"
+save as "AllEmployess.csv"
+
+run the powershell script.
+
+You now need to remove the duplicates from the CSV files
+Order the coumns to descend by EmployeeNumber
+Add the following formula to identify the first apparisson of the employeeNumber
+
+
+
+
