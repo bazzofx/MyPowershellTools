@@ -26,18 +26,14 @@ Register-ObjectEvent -InputObject $outlook -EventName "AdvancedSearchComplete" -
 
 }
       
-      
-
-
-
-
-
+   
 
 Function Get-OutlookInbox($query) {
 Try{
     $accountsList = $namespace.Folders
 
     $query = "LOL ITS WORKING"
+    #$filter = "urn:schemas:httpmail:subject LIKE '%"+$query+"%'"
     $filter = "urn:schemas:httpmail:textdescription LIKE '%"+$query+"%'"
 
     foreach($account in $accountsList) {

@@ -3,13 +3,13 @@ $ErrorActionPreference= 'Stop'
 $userProfile = $env:USERPROFILE
 
 $expiredDate = Get-Date  # Get todays date
-#expireDate = (get-date).AddMonths(-36) # 3 years ago from today  # 3 years ago from today
+$expireDate = (get-date).AddMonths(-36) # 3 years ago from today  # 3 years ago from today
     $x =[string]$expiredDate
     $x = $x.Substring(0,10)
     $x = $x.replace("`/" ,"-")
 
 $expiredDateSubscription = Get-Date # Get todays date
-#$expiredDateSubscription = (get-date).AddMonths(-12) # 1 years ago from today
+$expiredDateSubscription = (get-date).AddMonths(-12) # 1 years ago from today
     $y =[string]$expiredDateSubscription
     $y = $y.Substring(0,10)
     $y = $y.replace("`/" ,"-")
@@ -427,6 +427,15 @@ $array5 | Export-Csv -Path $missingReport -NoTypeInformation
  
 } #--- close function
 
+
+<##Create this instead, 
+import records by descending on Reference number
+Add a new role with the following formula "=(COUNTIF($A$2:$A2,$A2)=1)+0"
+export csv.
+Import csv that has only Columnn = 1
+export .csv final without duplicates
+
+#>
 function removeDuplicates {
 $data = Import-Csv $RealValidReport
 $data2 = Import-Csv $subscriptionDBSReport
@@ -526,7 +535,7 @@ mv $UpdaDBSReport $ArchivePath -force
 #mv $subscriptionDBSReport $ArchivePath -force
 mv $subscriptionFAILDBSReport $ArchivePath -force
 
-#mv *source* -path archive
+###
 
 
 }
@@ -547,3 +556,4 @@ allUsersMissingDBS
 
 HouseKeeping
 Write-Host "Your final reports are saved on $logFolderDBS" -ForegroundColor Yellow -BackgroundColor Black    
+#clean up   on excel /// =(COUNTIF($A$2:$A2,$A2)=1)+0
