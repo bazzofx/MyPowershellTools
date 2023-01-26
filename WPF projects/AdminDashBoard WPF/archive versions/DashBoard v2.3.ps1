@@ -106,14 +106,13 @@ checkConnection
                 $currentRowPassword = $global:users.Password[$count]
                 $currentRowEmail = $global:users.UserPrincipalName[$count]
 
-                 Try{
+
                      Set-MsOlUserPassword -UserPrincipalName $currentRowEmail -NewPassword $currentRowPassword -ForceChangePassword $True
-                     Write-Host " The password for $currentRowEmail has been reset to ---> |  $currentRowPassword" -ForegroundColor Green
-                     Write-Host ""
-                     Write-Host "---------------------------"
-                 }
-                 Catch [System.Exception] {Write-Host ""}
-                 Catch {   Write-Host "[ERROR] : $currentRowEmail PASSWORD FAIL TO UPDATED." -ForegroundColor Red     }
+                     Write-Output " The password for $currentRowEmail has been reset to ---> |  $currentRowPassword" -ForegroundColor Green
+                     Write-Output ""
+                     Write-Output "---------------------------"
+                 
+
      
              $count +=1
                 } # --close ForLoop
