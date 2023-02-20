@@ -24,7 +24,6 @@ ForEach ($object in $x){
             $validResult = $object.Group[$object.count -1]."Passed DBS Check?" 
             Write-Host $FirstName $RenewalDate -ForegroundColor Yellow
             Write-Host $RenewalDate2 -ForegroundColor Green
-            sleep 1
 
             $row | Add-Member -MemberType NoteProperty -Name "Reference" -Value $Reference
             $row | Add-Member -MemberType NoteProperty -Name "FirstName" -Value $FirstName

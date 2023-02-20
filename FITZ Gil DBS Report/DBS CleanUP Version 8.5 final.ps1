@@ -516,6 +516,7 @@ Write-Host "Duplicate records removed from Valid DBS Subscription Report" -Foreg
 
 
 function HouseKeeping{
+Write-Host "cleaning unecessary files..." -ForegroundColor Yellow
 $userProfile = $env:USERPROFILE
 $logFolderArchive = "$userProfile\Documents\Reports\DBS"
 $ArchiveName = "Source $(get-date -f dd-MM-yyy)"
@@ -536,8 +537,6 @@ mv $UpdaDBSReport $ArchivePath -force
 mv $subscriptionFAILDBSReport $ArchivePath -force
 
 ###
-
-
 }
 clear
 sleep 1
@@ -553,7 +552,7 @@ GenerateSubscriptonxpired
 
 GetRealReport
 allUsersMissingDBS
-
+#removeDuplicates
 HouseKeeping
 Write-Host "Your final reports are saved on $logFolderDBS" -ForegroundColor Yellow -BackgroundColor Black    
 #clean up   on excel /// =(COUNTIF($A$2:$A2,$A2)=1)+0
