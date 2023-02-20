@@ -1,0 +1,44 @@
+* { 
+	box-sizing: border-box;
+}
+html, body {
+	min-height: 100%;
+	background: #fff;
+	color: #000;
+}
+	/* sets the body height of the browser, so that backgrounds and div heights work correctly. Color and background will almost certainly be altered; they are just placeholders */
+	
+body {
+	font-size: 1.4rem;
+	text-rendering: optimizeLegibility;
+}
+
+.nav {
+    background-color: rgb(80, 80, 80);
+    margin:auto;
+    width:50%;
+    text-align:center;
+    padding:20px;
+}
+.websiteTitle{
+    background-color: tomato;
+    width: 50%;
+    margin:auto;
+}
+.textArea{
+    margin:audo;
+    padding:center;
+    border: #000 solid;
+    
+}
+abbr:hover {
+    width:1.4em;
+    background-color: tomato;
+    font-style: italic;
+}
+
+table, th, td {
+    border: 1px solid black;
+    padding:4px;
+    
+  }

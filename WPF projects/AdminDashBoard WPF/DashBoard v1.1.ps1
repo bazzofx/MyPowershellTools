@@ -39,6 +39,7 @@ function loadCSV{
     Try{
  $global:users = Import-CSV $filePath -Header "UserPrincipalName", "Login", "Password" |Select-Object -Skip 1
  Write-Host "[SUCCESS] Data files loaded successfully" -ForegroundColor Green
+ Write-Host " The file contains $global:users"
   }
   Catch{Write-Host "[WARNING] Failed to import data" -ForegroundColor red }
                   } #-- close function

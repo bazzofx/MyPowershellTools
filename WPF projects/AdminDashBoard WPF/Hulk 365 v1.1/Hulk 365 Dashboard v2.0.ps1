@@ -2,7 +2,7 @@
 
 ##################################################################
 #--------------LOG VARIABLES START -------------------------------
-$ErrorActionPreference = "stop"
+$ErrorActionPreference = "continue"
 $userProfile = $env:USERPROFILE
 $license = "FitzRoy:STANDARDWOFFPACK"
 
