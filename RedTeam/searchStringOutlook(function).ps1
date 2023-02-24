@@ -1,6 +1,11 @@
-﻿Add-type -assembly "Microsoft.Office.Interop.Outlook" | out-null
+﻿#String to search email body
+$global:query = "Password"
+
+Add-type -assembly "Microsoft.Office.Interop.Outlook" | out-null
     $outlook = New-Object -com Outlook.Application;
     $namespace = $outlook.GetNamespace("MAPI");
+    #Accounts on scope 
+    $namespace.accounts | Select SmtpAddress
 
 Register-ObjectEvent -InputObject $outlook -EventName "AdvancedSearchComplete" -Action {
     Write-Host "ADVANCED SEARCH COMPLETE" $Args.Scope
@@ -19,7 +24,8 @@ Register-ObjectEvent -InputObject $outlook -EventName "AdvancedSearchComplete" -
             write-host "Time: $time"
             write-host "Sender:$sender"
             write-host "=================================================="
-            $extract | Out-File "$subject.html"
+            #Output each email into an HTML format inside the folder where you are running this file from
+            #$extract | Out-File "$subject.html"
         }
     
     }
@@ -36,8 +42,7 @@ Register-ObjectEvent -InputObject $outlook -EventName "AdvancedSearchComplete" -
 Function Get-OutlookInbox($query) {
 Try{
     $accountsList = $namespace.Folders
-
-    $query = "LOL ITS WORKING"
+    $query = $global:query
     $filter = "urn:schemas:httpmail:textdescription LIKE '%"+$query+"%'"
 
     foreach($account in $accountsList) {
@@ -55,11 +60,12 @@ Finally {
 
 Get-OutlookInbox
  
-     Write-Host "GC collected" -ForegroundColor Yellow
-    Remove-Variable outlook
-    [System.GC]::Collect()
-    [System.GC]::WaitForPendingFinalizers()
-    Try{[System.Runtime.Interopservices.Marshal]::ReleaseComObject($outlook)}
-    Catch{}   
+
+ #    Write-Host "GC collected" -ForegroundColor Yellow
+  #  Remove-Variable outlook
+   # [System.GC]::Collect()
+    #[System.GC]::WaitForPendingFinalizers()
+    #Try{[System.Runtime.Interopservices.Marshal]::ReleaseComObject($outlook)}
+    #Catch{}   
 
 
