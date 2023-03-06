@@ -538,6 +538,9 @@ mv $subscriptionFAILDBSReport $ArchivePath -force
 
 ###
 }
+
+
+function run {
 clear
 sleep 1
 
@@ -552,7 +555,10 @@ GenerateSubscriptonxpired
 
 GetRealReport
 allUsersMissingDBS
-#removeDuplicates
+#removeDuplicates #not working properly
 HouseKeeping
 Write-Host "Your final reports are saved on $logFolderDBS" -ForegroundColor Yellow -BackgroundColor Black    
-#clean up   on excel /// =(COUNTIF($A$2:$A2,$A2)=1)+0
+#clean up   on excel /// =(COUNTIF($A$2:$A2,$A2)=1)+0  ##create a function that adds this to a row to filter automatically
+}
+
+run
