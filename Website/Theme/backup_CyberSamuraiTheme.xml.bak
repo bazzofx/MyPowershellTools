@@ -6581,7 +6581,7 @@ $('.index-post .post-image-link .post-thumb').lazyyard();
 }(document, 'script', 'facebook-jssdk'));
 //]]>
 </script>  
-<!-- Overlay and Back To Topx --> 
+<!-- Overlay and Back To Top --> 
   <div class='back-top' title='Back to Top'/>
   
 </body>
