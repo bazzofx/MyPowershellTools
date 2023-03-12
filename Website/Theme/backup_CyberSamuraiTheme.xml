@@ -250,14 +250,13 @@ z-index:0;
  height: 100%;
 }
 .bg-samurai{
- background: url(https://www.pngall.com/wp-content/uploads/4/Samurai-PNG-Image-HD.png);
+ background: url(https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj9eqL6qKHVFEkl9d0OX0B-SlejsuOtgIJqkjwfJ8Nui-oDcNYQzloI--JnS69G3jGiBIr8hjxBCtMhgG2KGLnQ8uagdPxmr9Oz1UT47SVrKXxrNwpstB4JxERsPRDNcLrpUt3sKM88UnSfl_x0qnYs608kXN5SHX5VF913npQLReUU_hks1l80uNGtCg/s1600/Samurai-transparent-bg.png);
  z-index:-1;
  background-repeat: no-repeat;
  position: fixed;
- right: 0;
- top: 0;
- width: 100%;
- height: 100%;
+background-position: calc(100% - 10px) calc(100% - 220px); 
+width:100%;
+height:100%;
 }
 
 
