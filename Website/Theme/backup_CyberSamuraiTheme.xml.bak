@@ -220,7 +220,7 @@ abbr{
     margin:0;
     padding:0
 }
-.blog-back-bg {
+.blog-back-bg2 {
    position: fixed;
     right: 0;
     top: 0;
@@ -234,10 +234,7 @@ abbr{
     object-fit: cover;
 }
 #container{
-position: absolute; 
-left: 0%;
-top: 0%;
-box-sizing: border-box;
+position: absolute;
 width: 100%;
 height: 100%;
 }
@@ -4126,10 +4123,10 @@ var monthFormat = ["January", "February", "March", "April", "May", "June", "July
           <script>
  
 var NUM_PARTICLES = ( ( ROWS = 150 ) * ( COLS = 300 ) ),
-    THICKNESS = Math.pow( 50, 2 ),
+    THICKNESS = Math.pow( 90, 2 ),
     SPACING = 13,
-    MARGIN = 100,
-    COLOR = 220,
+    MARGIN = 0,
+    COLOR = 200,
     DRAG = 0.95,
     EASE = 0.25,
     
