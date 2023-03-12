@@ -117,7 +117,6 @@ body.is-dark{
 --menu-color:#f9fafb;
 --top-menu-color:#f6f7f8;
 --footer-color:#f6f7f8;
-overflow:hidden;
 }
 
 /*-- Reset CSS --*/
@@ -236,15 +235,22 @@ z-index:10
     object-fit: cover;
 }
 #container{
-position: absolute;
-  left: 50%;
-  top: 50%;
-z-index:0;
-
+position: absolute; 
+width: 100%;
+height: 100%;
+z-index:-1;
 }
+
+#myVirus{
+width:100%;
+height:100%;
+position:fixed;
+z-index:4
+}
+
 .linear-bg{
  background-image: linear-gradient(128deg, rgba(2,8,32,1) 2%, rgba(3,18,74,1) 19%, rgba(11,23,102,1) 43%, rgba(20,96,126,1) 70%, rgba(18,30,69,1) 91%, rgba(20,20,20,1) 100%);
- z-index:-2;
+ z-index:-3;
  position: fixed;
  right: 0;
  top: 0;
@@ -253,14 +259,13 @@ z-index:0;
 }
 .bg-samurai{
  background: url(https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj9eqL6qKHVFEkl9d0OX0B-SlejsuOtgIJqkjwfJ8Nui-oDcNYQzloI--JnS69G3jGiBIr8hjxBCtMhgG2KGLnQ8uagdPxmr9Oz1UT47SVrKXxrNwpstB4JxERsPRDNcLrpUt3sKM88UnSfl_x0qnYs608kXN5SHX5VF913npQLReUU_hks1l80uNGtCg/s1600/Samurai-transparent-bg.png);
- z-index:-1;
+ z-index:-2;
  background-repeat: no-repeat;
  position: fixed;
 background-position: calc(100% - 10px) calc(100% - 220px); 
 width:100%;
 height:100%;
 }
-
 
 
 #body-wrapper {   
@@ -4146,9 +4151,9 @@ var monthFormat = ["January", "February", "March", "April", "May", "June", "July
     
           <script>
  
-var NUM_PARTICLES = ( ( ROWS = 145 ) * ( COLS = 280 ) ),
+var NUM_PARTICLES = ( ( ROWS = 150 ) * ( COLS = 300 ) ),
     THICKNESS = Math.pow( 90, 2 ),
-    SPACING = 7,
+    SPACING = 13,
     MARGIN = 0,
     COLOR = 200,
     DRAG = 0.95,
@@ -4284,9 +4289,12 @@ function step() {
 init();
 step();       
       </script>
-</div>
+  </div>
   <div class='bg-samurai'> </div> <!-- custom background image samurai -->
   <div class='linear-bg'> </div> <!-- custom background color -->  
+    <div class='virusDiv'> 
+     <canvas id='myVirus'/>
+  </div>
   <div id='body-wrapper'>
  <div class='mobile-side-menu' id='hide-them-menu'>
 <div class='slide-menu-header'>
@@ -6559,7 +6567,89 @@ $(".post-body a").each(function() {
 	})
 //]]>
 </script>
+  <script>
+        // get the canvas and context
+      var canvas = document.getElementById(&quot;myVirus&quot;);
+      var ctx = canvas.getContext(&quot;2d&quot;);
 
+      // set variables
+      var bugCount = 10; // number of bugs
+      var bugSpeed = 2; // speed of bugs
+
+      // create array to hold all bugs
+      var bugs = [];
+      for (var i = 0; i &lt; bugCount; i++) {
+        bugs.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          width: 50,
+          height: 50,
+          dx: (Math.random() - 0.5) * bugSpeed,
+          dy: (Math.random() - 0.5) * bugSpeed,
+          isVisible: true
+        });
+      }
+
+      // draw the bugs
+      function draw() {
+        // clear canvas
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // loop through each bug
+        bugs.forEach(function(bug) {
+          // update the position
+          bug.x += bug.dx;
+          bug.y += bug.dy;
+
+          // check for collision with canvas edges
+          if (bug.x &lt; 0 || bug.x + bug.width &gt; canvas.width) {
+            bug.dx = -bug.dx;
+          }
+          if (bug.y &lt; 0 || bug.y + bug.height &gt; canvas.height) {
+            bug.dy = -bug.dy;
+          }
+
+          // draw the bug
+          if (bug.isVisible) {
+            var bugImg = new Image();
+            bugImg.src = &quot;https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgM5-AoLYtffmiegL1gOo4zwB0zbEpn-JaOeZ0NHQjlFfdc2E03DWwxeu80ZllC1oZLz15wvpJmhmXfN0vZoxo3ck0AUbqybfWF5Zlx1I7Xk9nCdEPRubyVNolBmgD26yNa5EMSy2oWivXMqd4k3L4X9xWJekQAoGBTjU5z4ja1E0_-p7gp7YYygMoLwQ/s200/virus.png&quot;;
+            ctx.drawImage(bugImg, bug.x, bug.y, bug.width, bug.height);
+          }
+        });
+
+        // call the draw function again after a short delay
+        setTimeout(draw, 1);
+      }
+var splatWidth = 350;
+var splatHeight = 350;
+      // add click event to canvas
+      canvas.addEventListener(&quot;click&quot;, function(event) {
+        // loop through each bug
+        bugs.forEach(function(bug) {
+          // check if the click was inside the bug
+          if (event.clientX &gt; bug.x &amp;&amp; event.clientX &lt; bug.x + bug.width &amp;&amp;
+              event.clientY &gt; bug.y &amp;&amp; event.clientY &lt; bug.y + bug.height) {
+            // hide the bug
+            bug.isVisible = false;
+
+            // show the green splat
+            var splatImg = new Image();
+            splatImg.src = &quot;splat.png&quot;;
+            splatImg.onload = function() {
+              ctx.drawImage(splatImg, bug.x, bug.y, splatWidth, splatHeight);
+            };
+
+            // fade out the green splat after 2 seconds
+            setTimeout(function() {
+              ctx.clearRect(bug.x, bug.y, bug.width, bug.height);
+            }, 5000);
+          }
+        });
+      });
+
+      // start the animation
+      draw();
+  </script>
 <!-- Pagination Scripts -->
 <b:if cond='data:view.isMultipleItems'>
 <script type='text/javascript'>

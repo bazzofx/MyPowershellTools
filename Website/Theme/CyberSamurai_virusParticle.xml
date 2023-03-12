@@ -117,7 +117,6 @@ body.is-dark{
 --menu-color:#f9fafb;
 --top-menu-color:#f6f7f8;
 --footer-color:#f6f7f8;
-overflow:hidden;
 }
 
 /*-- Reset CSS --*/
@@ -236,11 +235,10 @@ z-index:10
     object-fit: cover;
 }
 #container{
-position: absolute;
-  left: 50%;
-  top: 50%;
+position: absolute; 
+width: 100%;
+height: 100%;
 z-index:0;
-
 }
 .linear-bg{
  background-image: linear-gradient(128deg, rgba(2,8,32,1) 2%, rgba(3,18,74,1) 19%, rgba(11,23,102,1) 43%, rgba(20,96,126,1) 70%, rgba(18,30,69,1) 91%, rgba(20,20,20,1) 100%);
@@ -4146,9 +4144,9 @@ var monthFormat = ["January", "February", "March", "April", "May", "June", "July
     
           <script>
  
-var NUM_PARTICLES = ( ( ROWS = 145 ) * ( COLS = 280 ) ),
+var NUM_PARTICLES = ( ( ROWS = 150 ) * ( COLS = 300 ) ),
     THICKNESS = Math.pow( 90, 2 ),
-    SPACING = 7,
+    SPACING = 13,
     MARGIN = 0,
     COLOR = 200,
     DRAG = 0.95,
@@ -4265,16 +4263,13 @@ function step() {
 
   } else {
 
-    b = ( a = ctx.createImageData( w, h ) ).data;
+    var img = new Image();
+img.src = ""https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgM5-AoLYtffmiegL1gOo4zwB0zbEpn-JaOeZ0NHQjlFfdc2E03DWwxeu80ZllC1oZLz15wvpJmhmXfN0vZoxo3ck0AUbqybfWF5Zlx1I7Xk9nCdEPRubyVNolBmgD26yNa5EMSy2oWivXMqd4k3L4X9xWJekQAoGBTjU5z4ja1E0_-p7gp7YYygMoLwQ/s200/virus.png";
 
-    for ( i = 0; i &lt; NUM_PARTICLES; i++ ) {
-
-      p = list[i];
-      b[n = ( ~~p.x + ( ~~p.y * w ) ) * 4] = b[n+1] = b[n+2] = COLOR, b[n+3] = 255;
-    }
-
-    ctx.putImageData( a, 0, 0 );
-  }
+for ( i = 0; i &lt; NUM_PARTICLES; i++ ) {
+  p = list[i];
+  ctx.drawImage(img, p.x, p.y, 2, 2);
+}
 
   if ( stats ) stats.end();
 

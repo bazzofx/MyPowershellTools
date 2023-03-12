@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      #canvas {
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+	<div class="virusDiv">
+    <canvas id="myVirus" width="110px" height="100px"></canvas>
+	</div>
+    <script>
+      // get the canvas and context
+      var canvas = document.getElementById("myVirus");
+      var ctx = canvas.getContext("2d");
+
+      // set variables
+      var bugCount = 6; // number of bugs
+      var bugSpeed = 2; // speed of bugs
+
+      // create array to hold all bugs
+      var bugs = [];
+      for (var i = 0; i < bugCount; i++) {
+        bugs.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          width: 50,
+          height: 50,
+          dx: (Math.random() - 0.5) * bugSpeed,
+          dy: (Math.random() - 0.5) * bugSpeed,
+          isVisible: true
+        });
+      }
+
+      // draw the bugs
+      function draw() {
+        // clear canvas
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // loop through each bug
+        bugs.forEach(function(bug) {
+          // update the position
+          bug.x += bug.dx;
+          bug.y += bug.dy;
+
+          // check for collision with canvas edges
+          if (bug.x < 0 || bug.x + bug.width > canvas.width) {
+            bug.dx = -bug.dx;
+          }
+          if (bug.y < 0 || bug.y + bug.height > canvas.height) {
+            bug.dy = -bug.dy;
+          }
+
+          // draw the bug
+          if (bug.isVisible) {
+            var bugImg = new Image();
+            bugImg.src = "virus.png";
+            ctx.drawImage(bugImg, bug.x, bug.y, bug.width, bug.height);
+          }
+        });
+
+        // call the draw function again after a short delay
+        setTimeout(draw, 1);
+      }
+var splatWidth = 350;
+var splatHeight = 350;
+      // add click event to canvas
+      canvas.addEventListener("click", function(event) {
+        // loop through each bug
+        bugs.forEach(function(bug) {
+          // check if the click was inside the bug
+          if (event.clientX >= bug.x && event.clientX <= bug.x + bug.width &&
+              event.clientY >= bug.y && event.clientY <= bug.y + bug.height) {
+            // hide the bug
+            bug.isVisible = false;
+
+            // show the green splat
+            var splatImg = new Image();
+            splatImg.src = "splat.png";
+            splatImg.onload = function() {
+              ctx.drawImage(splatImg, bug.x, bug.y, splatWidth, splatHeight);
+            };
+
+            // fade out the green splat after 2 seconds
+            setTimeout(function() {
+              ctx.clearRect(bug.x, bug.y, bug.width, bug.height);
+            }, 5000);
+          }
+        });
+      });
+
+      // start the animation
+      draw();
+    </script>
+  </body>
+</html>
