@@ -233,6 +233,15 @@ abbr{
     background-position: calc(100% - 1050px) calc(100% - 0px); 
     object-fit: cover;
 }
+#container{
+position: absolute; 
+left: 0%;
+top: 0%;
+box-sizing: border-box;
+width: 100%;
+height: 100%;
+}
+
 #body-wrapper {   
     background-color: var(--main-body);
     max-width: 1350px;
@@ -4112,13 +4121,13 @@ var monthFormat = ["January", "February", "March", "April", "May", "June", "July
       </b:widget>
     </b:section>
   </div>
-  <div class='blog-back-bg' id='container' style='background: #111; position: absolute; left: 50%;top: 50%;'>   
+  <div id='container'>   
     
           <script>
  
-var NUM_PARTICLES = ( ( ROWS = 100 ) * ( COLS = 300 ) ),
-    THICKNESS = Math.pow( 80, 2 ),
-    SPACING = 7,
+var NUM_PARTICLES = ( ( ROWS = 150 ) * ( COLS = 300 ) ),
+    THICKNESS = Math.pow( 50, 2 ),
+    SPACING = 13,
     MARGIN = 100,
     COLOR = 220,
     DRAG = 0.95,
